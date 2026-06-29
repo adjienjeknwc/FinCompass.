@@ -1,0 +1,39 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Environment variables
+.env
+
+# Local database file
+database/fincompass.db
+
+# Generated data files (raw & processed CSVs)
+data/raw/
+data/processed/
+
+# ML models and evaluations
+ml/models/
+ml/confusion_matrix.png
+ml/classification_report.csv
+
+# Analytical JSON outputs
+analysis/stats_results.json
+analysis/forecast_results.json
+analysis/risk_scores.json
+
+# Persistent vector store (ChromaDB)
+rag/vectorstore/
+
+# Generated word and excel reports
+reports/Executive_Summary_*.docx
+reports/FinCompass_MIS_Report.xlsx
+
+# OS generated files
+.DS_Store
+.DS_Store?
+ehthumbs.db
+Icon?
+Thumbs.db

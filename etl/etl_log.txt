@@ -1,0 +1,31 @@
+2026-06-30 01:43:32,260 - INFO - Starting data ingestion from /Users/aditi/.gemini/antigravity/scratch/FinCompass/data/raw/complaints_raw.csv
+2026-06-30 01:43:32,299 - INFO - Validating null values in required columns.
+2026-06-30 01:43:32,305 - INFO - Validating date ranges (Jan 2020 - Dec 2024).
+2026-06-30 01:43:32,311 - INFO - Validating resolution_days logical integrity.
+2026-06-30 01:43:32,314 - INFO - Detecting statistical outliers (Z-score > 3) in resolution days.
+2026-06-30 01:43:32,316 - INFO - Flagged 241 resolution_days records as statistical outliers (Z-score > 3).
+2026-06-30 01:43:32,318 - INFO - Validation completed. Data quality report generated.
+2026-06-30 01:43:32,397 - INFO - Processed file saved to: /Users/aditi/.gemini/antigravity/scratch/FinCompass/data/processed/complaints_processed.csv
+ds Ingested: 15000
+Total Records Processed: 15000
+Invalid Dates Dropped: 0
+Invalid Resolution Days Repaired: 0
+Resolution Days Outliers (Z > 3) Flagged: 241
+
+Overall Null cells %: 0.0%
+Outlier %: 1.6067%
+Invalid Records %: 0.0%
+===================================================
+2026-06-30 01:43:32,922 - INFO - Existing database file removed for clean load.
+2026-06-30 01:43:32,923 - INFO - Initializing database tables...
+2026-06-30 01:43:32,928 - INFO - Database schema applied successfully.
+2026-06-30 01:43:32,928 - INFO - Populating lookup tables...
+2026-06-30 01:43:32,931 - INFO - Banks lookup populated.
+2026-06-30 01:43:32,933 - INFO - Categories lookup populated.
+2026-06-30 01:43:32,935 - INFO - Loading transaction complaints...
+2026-06-30 01:43:33,329 - INFO - Loaded 15000 records into 'complaints' table.
+2026-06-30 01:43:33,330 - INFO - Calculating and populating monthly summaries...
+2026-06-30 01:43:34,038 - INFO - Monthly summary metrics table loaded.
+2026-06-30 01:43:34,038 - INFO - Analyzing and populating policy flags...
+2026-06-30 01:43:34,127 - INFO - Loaded 107 supervisory policy flags.
+2026-06-30 01:43:34,128 - INFO - Pipeline load completed successfully.
