@@ -31,7 +31,7 @@ from sklearn.linear_model import LogisticRegression
 from sklearn.pipeline import Pipeline
 from sklearn.metrics import classification_report, confusion_matrix, accuracy_score, f1_score
 
-PROJECT_ROOT = Path("/Users/aditi/.gemini/antigravity/scratch/FinCompass")
+PROJECT_ROOT = Path(__file__).resolve().parent.parent
 DATA_PATH = PROJECT_ROOT / "data" / "processed" / "complaints_processed.csv"
 MODEL_DIR = PROJECT_ROOT / "ml" / "models"
 MODEL_PATH = MODEL_DIR / "complaint_classifier.pkl"

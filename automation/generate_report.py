@@ -24,7 +24,7 @@ from docx.enum.text import WD_ALIGN_PARAGRAPH
 from docx.oxml import OxmlElement, parse_xml
 from docx.oxml.ns import nsdecls, qn
 
-PROJECT_ROOT = Path("/Users/aditi/.gemini/antigravity/scratch/FinCompass")
+PROJECT_ROOT = Path(__file__).resolve().parent.parent
 DB_PATH = PROJECT_ROOT / "database" / "fincompass.db"
 FORECAST_JSON = PROJECT_ROOT / "analysis" / "forecast_results.json"
 REPORTS_DIR = PROJECT_ROOT / "reports"

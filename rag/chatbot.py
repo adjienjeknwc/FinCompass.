@@ -27,7 +27,7 @@ from langchain.prompts import PromptTemplate
 from langchain.chains import RetrievalQA
 
 # Load environment variables
-PROJECT_ROOT = Path("/Users/aditi/.gemini/antigravity/scratch/FinCompass")
+PROJECT_ROOT = Path(__file__).resolve().parent.parent
 load_dotenv(PROJECT_ROOT / ".env")
 
 VECTORSTORE_DIR = PROJECT_ROOT / "rag" / "vectorstore"

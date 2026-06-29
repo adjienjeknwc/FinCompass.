@@ -19,7 +19,7 @@ from apscheduler.schedulers.blocking import BlockingScheduler
 from automation.generate_report import create_executive_report
 from automation.excel_mis import generate_excel_mis
 
-PROJECT_ROOT = Path("/Users/aditi/.gemini/antigravity/scratch/FinCompass")
+PROJECT_ROOT = Path(__file__).resolve().parent.parent
 LOG_FILE = PROJECT_ROOT / "etl" / "etl_log.txt"
 
 logging.basicConfig(

@@ -24,7 +24,7 @@ import sqlite3
 import json
 from pathlib import Path
 
-PROJECT_ROOT = Path("/Users/aditi/.gemini/antigravity/scratch/FinCompass")
+PROJECT_ROOT = Path(__file__).resolve().parent.parent
 DB_PATH = PROJECT_ROOT / "database" / "fincompass.db"
 OUTPUT_JSON = PROJECT_ROOT / "analysis" / "risk_scores.json"
 

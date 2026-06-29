@@ -16,7 +16,7 @@ from pathlib import Path
 import logging
 
 # Paths setup
-PROJECT_ROOT = Path("/Users/aditi/.gemini/antigravity/scratch/FinCompass")
+PROJECT_ROOT = Path(__file__).resolve().parent.parent
 DB_PATH = PROJECT_ROOT / "database" / "fincompass.db"
 SCHEMA_PATH = PROJECT_ROOT / "database" / "schema.sql"
 PROCESSED_CSV = PROJECT_ROOT / "data" / "processed" / "complaints_processed.csv"

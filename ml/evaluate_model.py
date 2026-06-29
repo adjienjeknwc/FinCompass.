@@ -12,7 +12,7 @@ import pandas as pd
 from pathlib import Path
 from sklearn.metrics import classification_report, accuracy_score
 
-PROJECT_ROOT = Path("/Users/aditi/.gemini/antigravity/scratch/FinCompass")
+PROJECT_ROOT = Path(__file__).resolve().parent.parent
 MODEL_PATH = PROJECT_ROOT / "ml" / "models" / "complaint_classifier.pkl"
 DATA_PATH = PROJECT_ROOT / "data" / "processed" / "complaints_processed.csv"
 

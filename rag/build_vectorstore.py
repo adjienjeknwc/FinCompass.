@@ -27,7 +27,7 @@ from langchain.docstore.document import Document
 from offline_embeddings import OfflineTfidfEmbeddings
 from langchain_community.vectorstores import Chroma
 
-PROJECT_ROOT = Path("/Users/aditi/.gemini/antigravity/scratch/FinCompass")
+PROJECT_ROOT = Path(__file__).resolve().parent.parent
 DB_PATH = PROJECT_ROOT / "database" / "fincompass.db"
 VECTORSTORE_DIR = PROJECT_ROOT / "rag" / "vectorstore"
 

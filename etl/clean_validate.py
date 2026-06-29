@@ -25,7 +25,7 @@ from pathlib import Path
 from datetime import datetime
 
 # Setup logging configuration
-LOG_FILE = Path("/Users/aditi/.gemini/antigravity/scratch/FinCompass/etl/etl_log.txt")
+LOG_FILE = Path(__file__).resolve().parent / "etl_log.txt"
 LOG_FILE.parent.mkdir(parents=True, exist_ok=True)
 
 logging.basicConfig(
@@ -153,8 +153,8 @@ def clean_and_validate(df: pd.DataFrame) -> tuple[pd.DataFrame, dict]:
 
 def main():
     """Main runner script for ETL validation."""
-    raw_path = Path("/Users/aditi/.gemini/antigravity/scratch/FinCompass/data/raw/complaints_raw.csv")
-    processed_dir = Path("/Users/aditi/.gemini/antigravity/scratch/FinCompass/data/processed")
+    raw_path = Path(__file__).resolve().parent.parent / "data" / "raw" / "complaints_raw.csv"
+    processed_dir = Path(__file__).resolve().parent.parent / "data" / "processed"
     processed_dir.mkdir(parents=True, exist_ok=True)
     
     # Execute loading and cleaning

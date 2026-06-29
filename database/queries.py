@@ -20,7 +20,7 @@ import sqlite3
 import pandas as pd
 from pathlib import Path
 
-PROJECT_ROOT = Path("/Users/aditi/.gemini/antigravity/scratch/FinCompass")
+PROJECT_ROOT = Path(__file__).resolve().parent.parent
 DB_PATH = PROJECT_ROOT / "database" / "fincompass.db"
 
 def get_connection() -> sqlite3.Connection:

@@ -27,7 +27,7 @@ import scipy.stats as stats
 import statsmodels.api as sm
 import statsmodels.formula.api as smf
 
-PROJECT_ROOT = Path("/Users/aditi/.gemini/antigravity/scratch/FinCompass")
+PROJECT_ROOT = Path(__file__).resolve().parent.parent
 DB_PATH = PROJECT_ROOT / "database" / "fincompass.db"
 OUTPUT_JSON = PROJECT_ROOT / "analysis" / "stats_results.json"
 

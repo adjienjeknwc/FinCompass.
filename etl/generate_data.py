@@ -506,7 +506,7 @@ def generate_complaints_data():
 def main():
     """Main runner script for data generation."""
     # Setup data directories
-    raw_dir = Path("/Users/aditi/.gemini/antigravity/scratch/FinCompass/data/raw")
+    raw_dir = Path(__file__).resolve().parent.parent / "data" / "raw"
     raw_dir.mkdir(parents=True, exist_ok=True)
     
     # Generate data
