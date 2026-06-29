@@ -1,3 +1,4 @@
+# FinCompass Requirements
 pandas
 numpy
 sqlalchemy
