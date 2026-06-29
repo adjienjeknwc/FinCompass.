@@ -51,8 +51,11 @@ def run_step(step_name: str, script_path: Path):
     res = subprocess.run([sys.executable, str(script_path)], capture_output=False)
     
     if res.returncode != 0:
-        print(f"❌ Error: {step_name} failed with exit code {res.returncode}. Aborting pipeline.")
-        sys.exit(res.returncode)
+        if "AI Policy Assistant" in step_name:
+            print(f"⚠️ Warning: {step_name} failed with exit code {res.returncode}. Skipping vector store index build (falling back to offline SQL).")
+        else:
+            print(f"❌ Error: {step_name} failed with exit code {res.returncode}. Aborting pipeline.")
+            sys.exit(res.returncode)
         
     elapsed = time.time() - start_time
     print(f"✅ Success: {step_name} completed in {round(elapsed, 2)}s.")

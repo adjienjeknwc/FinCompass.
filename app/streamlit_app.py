@@ -33,7 +33,56 @@ PROJECT_ROOT = Path(__file__).resolve().parent.parent
 sys.path.append(str(PROJECT_ROOT))
 
 from database import queries
-from rag.chatbot import get_rag_response
+
+try:
+    from rag.chatbot import get_rag_response
+except ImportError:
+    # Pure Python / SQL Fallback for RAG Q&A when LangChain/ChromaDB are not installed
+    def get_rag_response(question, api_key=None):
+        import sqlite3
+        try:
+            with sqlite3.connect(str(PROJECT_ROOT / "database" / "fincompass.db")) as conn:
+                q_lower = question.lower()
+                if "growth" in q_lower or "highest" in q_lower:
+                    res_df = pd.read_sql_query("""
+                        SELECT b.bank_name, ms.year, ms.month, ms.total_complaints, ms.complaint_growth_pct
+                        FROM monthly_summary ms
+                        JOIN banks b ON ms.bank_id = b.bank_id
+                        WHERE ms.complaint_growth_pct > 15
+                        ORDER BY ms.complaint_growth_pct DESC
+                        LIMIT 3
+                    """, conn)
+                    lines = [f"- In year {row['year']} month {row['month']}, {row['bank_name']} had {row['total_complaints']} complaints, growing by {row['complaint_growth_pct']}% MoM." for _, row in res_df.iterrows()]
+                    answer = "[Pure SQL Search Fallback]\nBased on database records, the following banks had high complaint growth:\n\n" + "\n".join(lines) + "\n\n*Note: Running in offline SQL fallback mode because LangChain is not installed.*"
+                    return {"answer": answer, "sources": [], "mode": "SQL Fallback Mode"}
+                elif "fraud" in q_lower or "digital" in q_lower:
+                    res_df = pd.read_sql_query("""
+                        SELECT state, COUNT(*) as count 
+                        FROM complaints 
+                        WHERE category_id = 1 
+                        GROUP BY state 
+                        ORDER BY count DESC 
+                        LIMIT 3
+                    """, conn)
+                    lines = [f"- {row['state']} recorded {row['count']} digital fraud complaints." for _, row in res_df.iterrows()]
+                    answer = "[Pure SQL Search Fallback]\nTop digital fraud states recorded in database:\n\n" + "\n".join(lines) + "\n\n*Note: Running in offline SQL fallback mode because LangChain is not installed.*"
+                    return {"answer": answer, "sources": [], "mode": "SQL Fallback Mode"}
+                else:
+                    res_df = pd.read_sql_query("""
+                        SELECT b.bank_name, pf.flag_type, pf.flag_description, pf.severity
+                        FROM policy_flags pf
+                        JOIN banks b ON pf.bank_id = b.bank_id
+                        LIMIT 3
+                    """, conn)
+                    lines = [f"- {row['bank_name']} flagged for '{row['flag_type']}' ({row['severity']} severity): {row['flag_description']}" for _, row in res_df.iterrows()]
+                    answer = "[Pure SQL Search Fallback]\nRelevant supervisory alerts matching your query:\n\n" + "\n".join(lines) + "\n\n*Note: Running in offline SQL fallback mode because LangChain is not installed.*"
+                    return {"answer": answer, "sources": [], "mode": "SQL Fallback Mode"}
+        except Exception as e:
+            return {
+                "answer": f"[Fallback Error: {e}] No LangChain/ChromaDB installed and database query failed.",
+                "sources": [],
+                "mode": "Error Fallback Mode"
+            }
 
 # App Setup
 st.set_page_config(
