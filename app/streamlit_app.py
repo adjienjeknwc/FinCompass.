@@ -29,7 +29,7 @@ from datetime import datetime
 
 # Import query functions & chatbot
 import sys
-PROJECT_ROOT = Path("/Users/aditi/.gemini/antigravity/scratch/FinCompass")
+PROJECT_ROOT = Path(__file__).resolve().parent.parent
 sys.path.append(str(PROJECT_ROOT))
 
 from database import queries
@@ -790,13 +790,17 @@ def show_ai_policy_assistant():
 def main():
     inject_custom_css()
     
-    # 1. Verify DB is created
     db_exists = (PROJECT_ROOT / "database" / "fincompass.db").exists()
     if not db_exists:
-        st.warning("🛡️ Welcome to FinCompass! The database is not yet initialized.")
-        st.write("Please run the full pipeline in sequence via the command line:")
-        st.code("python run_all.py")
-        return
+        st.warning("🛡️ Welcome to FinCompass! The database is initializing...")
+        with st.spinner("Compiling platform files, generating synthetic data, training classification models, and building vector store (takes ~20 seconds)..."):
+            import subprocess
+            subprocess.run([sys.executable, str(PROJECT_ROOT / "run_all.py")])
+        st.success("Platform initialization complete! Reloading page...")
+        try:
+            st.rerun()
+        except AttributeError:
+            st.experimental_rerun()
         
     df = load_full_complaints()
     
