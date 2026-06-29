@@ -23,7 +23,7 @@ import sys
 from pathlib import Path
 import time
 
-PROJECT_ROOT = Path("/Users/aditi/.gemini/antigravity/scratch/FinCompass")
+PROJECT_ROOT = Path(__file__).resolve().parent
 
 # Define scripts to run in sequence
 PIPELINE_STEPS = [
