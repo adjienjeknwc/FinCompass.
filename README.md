@@ -1,126 +1,163 @@
-# FinCompass: Banking Complaint Intelligence & Supervisory Analytics Platform
+<div align="center">
 
-🛡️ **FinCompass** is an end-to-end data engineering and supervisory analytics platform designed to simulate the Reserve Bank of India’s (RBI) consumer protection and market intelligence operations. The platform ingests synthetic grievance records, cleanses and structures them into a relational database, applies statistical hypothesis testing and time-series forecasting, trains an NLP model to classify raw complaint texts, compiles a vector search index, and serves interactive supervisory dashboards alongside automated PDF/Word brief generators.
+# 🛡️ FinCompass
+### Banking Complaint Intelligence & Supervisory Analytics Platform
 
-This project is built specifically to demonstrate core competencies required for RBI Young Professional (YP) roles in Data Analytics and Policy Research.
+**An end-to-end data engineering and supervisory analytics platform simulating RBI-grade consumer protection and market intelligence operations.**
+
+[![Python](https://img.shields.io/badge/Python_3.10+-3776AB?style=for-the-badge&logo=python&logoColor=white)](https://www.python.org/)
+[![Pandas](https://img.shields.io/badge/Pandas-150458?style=for-the-badge&logo=pandas&logoColor=white)](https://pandas.pydata.org/)
+[![NumPy](https://img.shields.io/badge/NumPy-013243?style=for-the-badge&logo=numpy&logoColor=white)](https://numpy.org/)
+[![scikit-learn](https://img.shields.io/badge/scikit--learn-F7931E?style=for-the-badge&logo=scikitlearn&logoColor=white)](https://scikit-learn.org/)
+[![StatsModels](https://img.shields.io/badge/StatsModels-8CAAE6?style=for-the-badge&logo=python&logoColor=white)](https://www.statsmodels.org/)
+[![SQLAlchemy](https://img.shields.io/badge/SQLAlchemy-D71F00?style=for-the-badge&logo=sqlalchemy&logoColor=white)](https://www.sqlalchemy.org/)
+[![Streamlit](https://img.shields.io/badge/Streamlit-FF4B4B?style=for-the-badge&logo=streamlit&logoColor=white)](https://streamlit.io/)
+[![LangChain](https://img.shields.io/badge/LangChain-1C3C3C?style=for-the-badge&logo=langchain&logoColor=white)](https://www.langchain.com/)
+[![ChromaDB](https://img.shields.io/badge/ChromaDB-FF6F00?style=for-the-badge&logo=databricks&logoColor=white)](https://www.trychroma.com/)
+[![Gemini](https://img.shields.io/badge/Gemini_Flash-8E75B2?style=for-the-badge&logo=googlegemini&logoColor=white)](https://ai.google.dev/)
+[![Plotly](https://img.shields.io/badge/Plotly-3F4F75?style=for-the-badge&logo=plotly&logoColor=white)](https://plotly.com/python/)
+
+[![License](https://img.shields.io/badge/License-MIT-yellow.svg?style=flat-square)](LICENSE)
+[![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat-square)](CONTRIBUTING.md)
+[![Status](https://img.shields.io/badge/Status-Simulation%20%2F%20Portfolio%20Project-blue?style=flat-square)]()
+
+</div>
+
+---
+
+## 📖 Overview
+
+**FinCompass** is a full-stack data engineering and analytics platform that simulates the **Reserve Bank of India's (RBI)** consumer protection and market intelligence operations end-to-end. It ingests synthetic grievance records, cleans and structures them into a relational database, applies statistical hypothesis testing and time-series forecasting, trains an NLP classifier on raw complaint text, builds a vector search index for semantic Q&A, and serves everything through an interactive **6-page Streamlit supervisory dashboard** — complete with automated PDF/Word/Excel brief generation.
+
+This project was purpose-built to demonstrate the core competencies required for **RBI Young Professional (YP) roles in Data Analytics and Policy Research**: data pipeline engineering, statistical inference, forecasting, applied ML/NLP, and translating quantitative findings into policy-ready supervisory briefs.
+
+
 
 ---
 
 ## 🏗️ Platform Architecture
 
 ```
-                                    +-----------------------+
-                                    |  15,000 Complaints    |
-                                    |  (Synthetic Raw Data) |
-                                    +-----------+-----------+
-                                                |
-                                                v (ETL Pipeline: pandas & NumPy)
-                                    +-----------------------+
-                                    | clean_validate.py     |
-                                    | (Z-Score Outliers, DQ)|
-                                    +-----------+-----------+
-                                                |
-                                                v (Ingestion: SQLAlchemy)
-                                    +-----------------------+
-                                    |    fincompass.db      |
-                                    |  (SQLite3 Relational) |
-                                    +----+-----------+------+
-                                         |           |
-             +---------------------------+           +--------------------------+
-             |                                                                  |
-             v (Machine Learning & NLP)                                         v (Analytics & Time-Series)
-+-----------------------+                                           +-----------------------+
-|  train_classifier.py  |                                           |   stats_analysis.py   |
-| (TF-IDF + LogReg pipeline)                                        |  (Welch's t-test, OLS)|
-+-----------+-----------+                                           +-----------+-----------+
-            |                                                                   |
-            v                                                                   v
-+-----------------------+                                           +-----------------------+
-| complaint_classifier  |                                           |    forecasting.py     |
-|   (Saved .pkl Model)  |                                           | (SARIMA Forecast JSON)|
-+-----------+-----------+                                           +-----------+-----------+
-            |                                                                   |
-            +----------------------------+       +------------------------------+
-                                         |       |
-                                         v       v
-                                    +---------------+
-                                    | streamlit_app | <---+ (RAG Assistant)
-                                    | (6-Page App)  |     |
-                                    +-------+-------+     +-------------------------+
-                                            |                                       |
-                                            v (Report Automation)        +----------+----------+
-                                    +---------------+                    |   chatbot.py        |
-                                    | Word/Excel MIS|                    | (LangChain + Chroma) |
-                                    |   Generators  |                    +----------+----------+
-                                    +---------------+                               |
-                                                                                    v
-                                                                             [Gemini Flash API]
+                            ┌───────────────────────────┐
+                            │   15,000 Complaints         │
+                            │   (Synthetic Raw Data)       │
+                            └──────────────┬──────────────┘
+                                           │  ETL Pipeline (pandas & NumPy)
+                                           ▼
+                            ┌───────────────────────────┐
+                            │   clean_validate.py          │
+                            │   (Z-score outliers, DQ)      │
+                            └──────────────┬──────────────┘
+                                           │  Ingestion (SQLAlchemy)
+                                           ▼
+                            ┌───────────────────────────┐
+                            │      fincompass.db           │
+                            │   (SQLite3 Relational DB)     │
+                            └──────┬─────────────┬────────┘
+                                  │             │
+                  ML & NLP        ▼             ▼        Analytics & Time-Series
+              ┌───────────────────────┐   ┌───────────────────────┐
+              │  train_classifier.py    │   │   stats_analysis.py     │
+              │  (TF-IDF + LogReg)      │   │  (Welch's t-test, OLS)  │
+              └────────────┬──────────┘   └────────────┬──────────┘
+                           ▼                            ▼
+              ┌───────────────────────┐   ┌───────────────────────┐
+              │  complaint_classifier   │   │    forecasting.py       │
+              │     (Saved .pkl)         │   │  (SARIMA Forecast JSON) │
+              └────────────┬──────────┘   └────────────┬──────────┘
+                           │                            │
+                           └─────────────┬──────────────┘
+                                        ▼
+                            ┌───────────────────────────┐
+                            │      streamlit_app           │◀──┐  RAG Assistant
+                            │      (6-Page App)             │   │
+                            └──────────────┬──────────────┘   │
+                                           │                  │
+                                           ▼        ┌──────────┴──────────┐
+                            ┌───────────────────────┐   │     chatbot.py         │
+                            │   Word / Excel MIS       │   │ (LangChain + Chroma)   │
+                            │      Generators            │   └──────────┬──────────┘
+                            └───────────────────────┘                 │
+                                                                       ▼
+                                                          ┌─────────────────────┐
+                                                          │   Gemini Flash API    │
+                                                          └─────────────────────┘
 ```
 
 ---
 
 ## 🛠️ Technology Stack
 
-| Layer | Technologies Used | Description |
+<div align="center">
+
+| Layer | Technologies | Purpose |
 |---|---|---|
-| **Core Language** | Python 3.10+ | Primary language for pipeline, analytics, and modeling. |
-| **Database** | SQLite3, SQLAlchemy | Relational storage utilizing complex SQL (Window functions, JOINs). |
-| **Pipeline** | Pandas, NumPy | Structured ETL validation, cleaning, and log generation. |
-| **Statistics** | SciPy, StatsModels | Welch’s t-test, OLS linear regression, Mann-Kendall trend test. |
-| **Time-Series** | statsmodels SARIMAX | 6-month seasonal complaint volume forecasting. |
-| **ML / NLP** | scikit-learn | TF-IDF pipeline + Multinomial Logistic Regression. |
-| **GenAI / RAG** | LangChain, ChromaDB, Gemini Flash | Semantic vector search and Q&A over monthly supervisory briefs. |
-| **Automation** | python-docx, openpyxl, APScheduler | Automatic Word report briefs, conditional-formatted Excel MIS. |
-| **Visualization** | Plotly, Streamlit | Interactive multi-page dashboard. |
+| 🐍 **Core Language** | Python 3.10+ | Primary language for pipeline, analytics, and modeling |
+| 🗄️ **Database** | SQLite3, SQLAlchemy | Relational storage with window functions, JOINs |
+| ⚙️ **Pipeline** | Pandas, NumPy | Structured ETL validation, cleaning, log generation |
+| 📊 **Statistics** | SciPy, StatsModels | Welch's t-test, OLS regression, Mann-Kendall trend test |
+| 📈 **Time-Series** | statsmodels SARIMAX | 6-month seasonal complaint volume forecasting |
+| 🤖 **ML / NLP** | scikit-learn | TF-IDF pipeline + Multinomial Logistic Regression |
+| 🧠 **GenAI / RAG** | LangChain, ChromaDB, Gemini Flash | Semantic vector search & Q&A over supervisory briefs |
+| 📝 **Automation** | python-docx, openpyxl, APScheduler | Automated Word briefs, conditional-formatted Excel MIS |
+| 🎨 **Visualization** | Plotly, Streamlit | Interactive multi-page dashboard |
+
+</div>
 
 ---
 
 ## 📋 Methodology
 
 ### 1. Data Synthesis & Distribution Rationale
-Instead of uniform distributions, data is modeled to represent realistic system loads under the Integrated Ombudsman Scheme:
-* **Market Share Weighting**: SBI accounts for ~20% of complaints, matching its massive domestic footprint, followed by public sector peers.
-* **Macroeconomic Trends**: Digital Banking Fraud exhibits a Year-over-Year (YoY) compound growth rate of 25% to simulate post-COVID digital transactions.
-* **Supervisory Discrepancy**: Public sector banks are assigned a gamma distribution for `resolution_days` yielding a ~43-day mean, representing a 40% slower resolution velocity compared to private counterparts.
+Synthetic data is modeled to reflect realistic system loads under the Integrated Ombudsman Scheme, rather than uniform random distributions:
+- **Market share weighting** — SBI accounts for ~20% of complaints, matching its domestic footprint, followed by public sector peers.
+- **Macroeconomic trends** — Digital Banking Fraud is modeled with a 25% YoY compound growth rate, simulating post-COVID digital transaction growth.
+- **Supervisory discrepancy** — Public sector banks are assigned a gamma distribution for `resolution_days`, yielding a ~43-day mean (~40% slower than private counterparts).
 
 ### 2. ETL Cleaning & Data Quality Assurance (`clean_validate.py`)
-* Outliers in `resolution_days` are flagged using a standard Z-score threshold ($Z > 3$).
-* Inconsistencies are repaired (e.g., setting `resolution_days` to null for pending complaints, and filling resolved entries lacking day counts with the bank type's median).
-* Full execution steps and metrics are exported to `etl/etl_log.txt`.
+- Outliers in `resolution_days` flagged via a standard **Z-score threshold (Z > 3)**.
+- Inconsistencies repaired — e.g., `resolution_days` set to null for pending complaints, and resolved entries missing day counts filled with the bank type's median.
+- Full execution steps and metrics exported to `etl/etl_log.txt`.
 
 ### 3. Statistical Inference & Predictive Analytics
-* **Welch’s t-test**: Standard independent two-sample t-test with unequal variances to compare public vs. private bank resolution days.
-* **OLS Regression**: Predicts resolution days based on the bank type, channel, and complaint category, identifying coefficients to isolate systemic friction points.
-* **Mann-Kendall Test**: Non-parametric test checking for a monotonic upward trend in Digital Banking Fraud.
+- **Welch's t-test** — independent two-sample test with unequal variances, comparing public vs. private bank resolution days.
+- **OLS Regression** — predicts resolution days from bank type, channel, and complaint category to isolate systemic friction points.
+- **Mann-Kendall Test** — non-parametric test for a monotonic upward trend in Digital Banking Fraud.
 
 ---
 
-## 🚀 How to Run the Platform
+## 🚀 Getting Started
 
 ### Prerequisites
-Make sure you have Python 3.10+ installed.
+- Python 3.10+
 
-### 1. Clone the Repository & Install Dependencies
+### Installation & Full Pipeline Run
+
 ```bash
+# 1. Clone the repository
 git clone https://github.com/yourusername/FinCompass.git
 cd FinCompass
-pip install -r requirements.txt
-```
 
-### 2. Run the End-to-End Orchestrator
-Execute the complete pipeline in sequence (data generation -> validation -> database load -> ML training -> statistics -> vector store building -> MIS generation):
-```bash
+# 2. Install dependencies
+pip install -r requirements.txt
+
+# 3. Run the end-to-end orchestrator
+# (data generation → validation → DB load → ML training → stats → vector store → MIS generation)
 python run_all.py
 ```
 
-### 3. Setup Gemini API Key (Optional)
-To test the AI Policy Assistant page with the live Gemini Flash model, create a `.env` file at the root:
-```env
+### Optional: Enable the Live AI Policy Assistant
+
+Create a `.env` file at the project root:
+
+```
 GEMINI_API_KEY=your_google_studio_api_key_here
 ```
-*(If no key is provided, the chatbot will gracefully execute in local semantic synthesis mode).*
 
-### 4. Launch the Streamlit Dashboard
+> If no key is provided, the chatbot gracefully falls back to a local semantic synthesis mode.
+
+### Launch the Dashboard
+
 ```bash
 streamlit run app/streamlit_app.py
 ```
@@ -129,43 +166,71 @@ streamlit run app/streamlit_app.py
 
 ## 📈 Key Findings (Based on Simulated Data)
 
-1. **Systemic Backlogs**: Public Sector banks exhibit significantly higher average resolution times (Welch's t-test: $p < 0.001$, rejecting the null hypothesis).
-2. **Fraud Trends**: Digital Banking Fraud is expanding at an alarming rate, showing a statistically significant upward monotonic trend (Mann-Kendall Tau: $+0.84$, $p < 0.0001$).
-3. **Friction Channels**: OLS regression indicates that complaints filed via the physical branch channel add an average of 14.2 days to resolution compared to online filings.
+| Finding | Statistical Evidence |
+|---|---|
+| 🏛️ **Systemic backlogs** in public sector banks | Welch's t-test: `p < 0.001` (null hypothesis rejected) |
+| 📱 **Digital Banking Fraud** rising sharply | Mann-Kendall Tau: `+0.84`, `p < 0.0001` |
+| 🏢 **Branch-filed complaints** add friction | OLS regression: +14.2 days vs. online filings |
 
 ---
 
 ## 🏛️ Policy Implications (DoS Brief)
 
-### I. Institutional Action Plan
-The persistent discrepancy in grievance redressal velocity between Public and Private sector banks represents a structural bottleneck in consumer protection. It is recommended that the Department of Supervision (DoS) mandate specialized workflow automation for public sector banks whose average resolution days exceed the 45-day threshold. Periodic spot audits are suggested to inspect internal bank ombudsman frameworks.
+**I. Institutional Action Plan**
+The persistent gap in grievance redressal velocity between public and private sector banks points to a structural bottleneck in consumer protection. The analysis recommends the Department of Supervision (DoS) mandate specialized workflow automation for public sector banks whose average resolution time exceeds a 45-day threshold, alongside periodic spot audits of internal bank ombudsman frameworks.
 
-### II. Mitigation of Digital Transaction Risks
-Given the statistically validated acceleration of Digital Banking Fraud, a regulatory update to the Master Direction on Digital Banking Security Controls is advised. This should include mandatory real-time transaction cooling periods for high-risk accounts and strict security audits for third-party UPI integrations, specifically targeting Small Finance Banks exhibiting sudden QoQ complaint volume spikes.
+**II. Mitigation of Digital Transaction Risks**
+Given the statistically validated acceleration in Digital Banking Fraud, the analysis suggests a regulatory update to the Master Direction on Digital Banking Security Controls — including mandatory real-time transaction cooling periods for high-risk accounts and stricter security audits for third-party UPI integrations, with particular focus on Small Finance Banks showing sudden QoQ complaint spikes.
+
+---
+
+## 🖼️ Dashboard Pages
+
+<div align="center">
+
+| # | Page | Description |
+|---|---|---|
+| 1 | **Executive Dashboard** | High-level KPIs and complaint volume overview |
+| 2 | **Complaint Deep Dive** | Real-time NLP classifier on raw complaint text |
+| 3 | **DoS Supervisory Monitoring** | Bank-level resolution velocity tracking |
+| 4 | **Heatmap & Geographic Analysis** | Regional complaint density visualization |
+| 5 | **Time-Series Forecasting & Stats** | SARIMA forecasts and hypothesis test results |
+| 6 | **AI Policy Assistant** | RAG-powered chat over monthly supervisory briefs |
+
+</div>
+
+> 📸 *Replace this table with actual screenshots/GIFs per page once available — a 2-column image grid works well here.*
 
 ---
 
-## 🖼️ Dashboard Preview Placeholders
+## 🗺️ Roadmap
 
-* **Page 1 - Executive Dashboard**
-  *(Place Page 1 Screenshot here)*
-  
-* **Page 2 - Complaint Deep Dive & Real-time Classifier**
-  *(Place Page 2 Screenshot here)*
-  
-* **Page 3 - DoS Supervisory Monitoring Dashboard**
-  *(Place Page 3 Screenshot here)*
-
-* **Page 4 - Heatmap & Geographic Analysis**
-  *(Place Page 4 Screenshot here)*
-
-* **Page 5 - Time-Series Forecasting & Stats**
-  *(Place Page 5 Screenshot here)*
-
-* **Page 6 - AI Policy Assistant Chat interface**
-  *(Place Page 6 Screenshot here)*
+- [ ] Swap synthetic data generator for anonymized real-world grievance datasets
+- [ ] Add role-based access control for the supervisory dashboard
+- [ ] Expand forecasting to per-bank and per-region granularity
+- [ ] CI/CD pipeline for automated model retraining
+- [ ] Deploy live demo (Streamlit Cloud / Docker)
 
 ---
+
+## ⚠️ Disclaimer
+
+This project uses **entirely synthetic data** and is built as an independent portfolio/demonstration project. It is **not affiliated with, endorsed by, or representative of official RBI systems, data, or policy positions**.
+
+---
+
+## 🤝 Contributing
+
+Contributions, issues, and feature requests are welcome! Feel free to check the [issues page](../../issues).
 
 ## 📄 License
-This project is licensed under the MIT License - see the LICENSE file for details.
+
+This project is licensed under the MIT License — see the [LICENSE](LICENSE) file for details.
+
+---
+
+<div align="center">
+
+**Built with 🛡️ for data-driven supervisory intelligence.**
+
+</div>
